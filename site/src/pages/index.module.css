@@ -1,32 +1,65 @@
 .hero {
-  padding: 7rem 0 6rem;
-  color: #f8fbff;
+  position: relative;
+  padding: 7.25rem 0 6.25rem;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 85% 20%, rgba(99, 154, 255, 0.34), transparent 28rem),
-    linear-gradient(135deg, #0d1b2e, #183b6b 58%, #2456a6);
+    radial-gradient(circle at 88% 16%, rgba(216, 59, 140, 0.15), transparent 25rem),
+    radial-gradient(circle at 72% 76%, rgba(242, 183, 5, 0.14), transparent 22rem),
+    linear-gradient(135deg, rgba(47, 111, 237, 0.12), #ffffff 46%, #f5f7fa);
+}
+
+.hero::after {
+  position: absolute;
+  right: -7rem;
+  bottom: -9rem;
+  width: 28rem;
+  height: 28rem;
+  border: 1px solid rgba(47, 111, 237, 0.18);
+  border-radius: 50%;
+  content: '';
+}
+
+[data-theme='dark'] .hero {
+  background:
+    radial-gradient(circle at 88% 16%, rgba(216, 59, 140, 0.16), transparent 25rem),
+    radial-gradient(circle at 72% 76%, rgba(242, 183, 5, 0.1), transparent 22rem),
+    linear-gradient(135deg, rgba(47, 111, 237, 0.18), #101827 50%, #172235);
 }
 
 .hero h1 {
-  max-width: 780px;
-  margin-bottom: 1.2rem;
-  color: inherit;
-  font-size: clamp(2.7rem, 6vw, 5.2rem);
+  max-width: 850px;
+  margin-bottom: 1.35rem;
+  color: var(--illuminatio-ink);
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  font-weight: 820;
+  letter-spacing: -0.065em;
   line-height: 0.98;
 }
 
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   margin-bottom: 1.5rem;
-  color: #b8d3ff;
-  font-size: 0.82rem;
-  font-weight: 750;
+  color: var(--illuminatio-blue);
+  font-size: 0.78rem;
+  font-weight: 800;
   letter-spacing: 0.18em;
 }
 
+.eyebrow::before {
+  width: 2.5rem;
+  height: 3px;
+  border-radius: 999px;
+  content: '';
+  background: linear-gradient(90deg, var(--illuminatio-blue), var(--illuminatio-pink));
+}
+
 .lead {
-  max-width: 710px;
-  margin-bottom: 2rem;
-  color: #dce9fb;
-  font-size: 1.24rem;
+  max-width: 735px;
+  margin-bottom: 2.15rem;
+  color: var(--illuminatio-muted);
+  font-size: 1.22rem;
   line-height: 1.65;
 }
 
@@ -37,41 +70,84 @@
 }
 
 .routes {
-  padding: 4.5rem 0 5.5rem;
-  background: var(--ifm-background-surface-color);
+  padding: 4.75rem 0 5.75rem;
+  border-top: 1px solid var(--illuminatio-line);
+  background: var(--ifm-background-color);
 }
 
 .card {
-  display: block;
-  min-height: 235px;
+  position: relative;
+  display: flex;
+  min-height: 245px;
   margin: 0.75rem 0;
   padding: 2rem;
-  color: var(--ifm-font-color-base);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 0.75rem;
+  overflow: hidden;
+  flex-direction: column;
+  color: var(--illuminatio-ink);
+  border: 1px solid var(--illuminatio-line);
+  border-radius: 0.85rem;
   background: var(--ifm-background-color);
-  box-shadow: 0 16px 36px rgba(18, 38, 68, 0.08);
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  box-shadow: 0 16px 36px rgba(18, 38, 68, 0.07);
+  transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  content: '';
+  background: linear-gradient(90deg, var(--illuminatio-blue), var(--illuminatio-pink), var(--illuminatio-gold));
 }
 
 .card:hover {
-  color: var(--ifm-font-color-base);
+  color: var(--illuminatio-ink);
   text-decoration: none;
-  transform: translateY(-3px);
-  box-shadow: 0 20px 42px rgba(18, 38, 68, 0.14);
+  border-color: color-mix(in srgb, var(--illuminatio-blue) 45%, var(--illuminatio-line));
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px rgba(18, 38, 68, 0.13);
 }
 
 .card h2 {
-  font-size: 1.65rem;
+  margin-bottom: 0.9rem;
+  font-size: 1.55rem;
+  letter-spacing: -0.035em;
+}
+
+.card p {
+  color: var(--illuminatio-muted);
+  line-height: 1.65;
 }
 
 .card span {
-  color: var(--ifm-color-primary);
-  font-weight: 700;
+  margin-top: auto;
+  color: var(--illuminatio-blue);
+  font-weight: 750;
 }
 
 @media screen and (max-width: 996px) {
   .hero {
     padding: 5rem 0 4.5rem;
+  }
+
+  .hero h1 {
+    letter-spacing: -0.05em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .hero {
+    padding: 4rem 0 3.75rem;
+  }
+
+  .hero h1 {
+    font-size: 2.75rem;
+  }
+
+  .lead {
+    font-size: 1.08rem;
+  }
+
+  .actions :global(.button) {
+    width: 100%;
   }
 }

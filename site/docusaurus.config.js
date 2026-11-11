@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 
 const siteUrl = process.env.DOCS_SITE_URL || 'https://docs.illuminatio.digital';
+const baseUrl = process.env.DOCS_BASE_URL || '/';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -8,7 +9,7 @@ const config = {
   tagline: 'Architecture, services, APIs and operations for the Illuminatio platform',
   favicon: 'illuminatio-mark.png',
   url: siteUrl,
-  baseUrl: '/',
+  baseUrl,
   organizationName: 'mjeremym',
   projectName: 'illuminatio-documents',
   trailingSlash: false,
@@ -98,7 +99,7 @@ const config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Jeremy Miller. Proprietary.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Attatae Ltd. Illuminatio is proprietary software.`,
     },
     mermaid: {
       theme: {light: 'neutral', dark: 'dark'},

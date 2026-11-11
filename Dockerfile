@@ -2,6 +2,9 @@ FROM node:24-alpine AS build
 
 WORKDIR /site
 
+ARG DOCS_BASE_URL=/
+ENV DOCS_BASE_URL=${DOCS_BASE_URL}
+
 COPY site/package.json site/package-lock.json ./
 RUN npm ci --ignore-scripts
 

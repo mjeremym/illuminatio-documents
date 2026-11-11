@@ -72,6 +72,22 @@ starts Compose and waits for `/healthz`. Set `MS_DOCUMENTATION_BUILD=false` to r
 image, `DOCUMENTATION_PORT` to override port 8088, or `ILLUMINATIO_DOCUMENTS_ROOT` when the documents
 repository is not a sibling of `illuminatio-parent`.
 
+## Release publication and presentation
+
+The parent release workflow publishes this site alongside the application images using the same
+immutable namespace and tag. Release images are built with `DOCS_BASE_URL=/documentation/`; Caddy
+links to that path from the default landing page and proxies it to this container. Local Bootstrap
+builds retain `DOCS_BASE_URL=/`, so `http://127.0.0.1:8088` continues to work unchanged.
+
+The documentation theme reuses the landing-page Illuminatio design tokens: Inter/system typography,
+blue, magenta and gold accents, light gradient washes, compact surfaces, and accessible focus states.
+Documentation navigation, code blocks, tables, diagrams and dark mode remain optimized for technical
+reading rather than reproducing the marketing layout.
+
+The container remains responsible for Basic Authentication. Caddy does not terminate or bypass the
+challenge, and `/healthz` remains the only unauthenticated endpoint. The browser-native Basic
+Authentication dialog cannot be branded.
+
 ## Continuous integration
 
 The `Documentation` workflow checks out the exact revisions in `docs-sources.lock.json`, rejects
