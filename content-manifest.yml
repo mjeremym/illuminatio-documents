@@ -1,0 +1,27 @@
+version: 1
+
+# Existing editorial material is private source until explicitly reviewed and changed to `publish`.
+# Technical parent/module documentation is collected independently and is always governed by its
+# owning repository.
+defaults:
+  articles: protected-source
+  images: protected-source
+  presentations: excluded
+
+entries:
+  - path: images/illuminatio-mark.png
+    status: publish
+    purpose: Illuminatio documentation-site brand mark
+  - path: articles/AI_DEMO_PROMPTS.md
+    status: protected-source
+  - path: articles/ai-inside-enterprise-financial-applications.md
+    status: protected-source
+  - path: articles/article-1-the-next-ai-wave-is-inside-the-application.md
+    status: protected-source
+  - path: articles/article-2-building-a-safe-data-terminal-for-enterprise-ai.md
+    status: protected-source
+  - path: articles/article-3-building-architectural-guardrails-for-enterprise-ai.md
+    status: protected-source
+  - path: presentations/
+    status: excluded
+    reason: Office source files and video are not part of the technical documentation site

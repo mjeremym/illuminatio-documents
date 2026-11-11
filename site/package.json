@@ -1,0 +1,36 @@
+{
+  "name": "illuminatio-documentation-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "collect": "node scripts/collect-docs.mjs",
+    "collect:local": "node scripts/collect-docs.mjs --allow-dirty",
+    "validate": "node scripts/validate-docs.mjs",
+    "start": "npm run collect:local && npm run validate && docusaurus start",
+    "build": "npm run collect && npm run validate && docusaurus build",
+    "build:local": "npm run collect:local && npm run validate && docusaurus build",
+    "build:site": "npm run validate && docusaurus build",
+    "serve": "docusaurus serve"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/theme-mermaid": "3.10.2",
+    "@easyops-cn/docusaurus-search-local": "0.55.3",
+    "@mdx-js/react": "3.1.1",
+    "@mermaid-js/layout-elk": "0.1.9",
+    "prism-react-renderer": "2.4.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "yaml": "2.9.1"
+  },
+  "overrides": {
+    "katex": "0.19.1",
+    "serialize-javascript": "7.1.4",
+    "tinypool": "2.2.0",
+    "uuid": "11.1.1"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

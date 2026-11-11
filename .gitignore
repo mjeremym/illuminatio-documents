@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+._*
+*.textClipping
+
+# Docusaurus and Node
+node_modules/
+site/build/
+site/.docusaurus/
+site/.cache/
+site/.generated/
+site/build/
+coverage/
+
+# Package-manager logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Local configuration and secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+.secrets/
+*.htpasswd
+*.key
+*.p12
+*.pfx
+
+# Editor and temporary files
+.idea/
+*.iml
+*.swp
+*~
+~$*.docx
+~$*.pptx
+.~lock.*
+
+# Test output
+test-results/
+playwright-report/

@@ -1,0 +1,77 @@
+.hero {
+  padding: 7rem 0 6rem;
+  color: #f8fbff;
+  background:
+    radial-gradient(circle at 85% 20%, rgba(99, 154, 255, 0.34), transparent 28rem),
+    linear-gradient(135deg, #0d1b2e, #183b6b 58%, #2456a6);
+}
+
+.hero h1 {
+  max-width: 780px;
+  margin-bottom: 1.2rem;
+  color: inherit;
+  font-size: clamp(2.7rem, 6vw, 5.2rem);
+  line-height: 0.98;
+}
+
+.eyebrow {
+  margin-bottom: 1.5rem;
+  color: #b8d3ff;
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.18em;
+}
+
+.lead {
+  max-width: 710px;
+  margin-bottom: 2rem;
+  color: #dce9fb;
+  font-size: 1.24rem;
+  line-height: 1.65;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.routes {
+  padding: 4.5rem 0 5.5rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.card {
+  display: block;
+  min-height: 235px;
+  margin: 0.75rem 0;
+  padding: 2rem;
+  color: var(--ifm-font-color-base);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 0.75rem;
+  background: var(--ifm-background-color);
+  box-shadow: 0 16px 36px rgba(18, 38, 68, 0.08);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.card:hover {
+  color: var(--ifm-font-color-base);
+  text-decoration: none;
+  transform: translateY(-3px);
+  box-shadow: 0 20px 42px rgba(18, 38, 68, 0.14);
+}
+
+.card h2 {
+  font-size: 1.65rem;
+}
+
+.card span {
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+}
+
+@media screen and (max-width: 996px) {
+  .hero {
+    padding: 5rem 0 4.5rem;
+  }
+}
