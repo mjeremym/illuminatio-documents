@@ -3,7 +3,7 @@
   "sources": [
     {
       "name": "illuminatio-parent",
-      "commit": "19f86baac3f8f8805dcdd4e5d0618d7805b3cb60",
+      "commit": "d8496e1c7b3394a8d00655d4c56ff6a8e2b92cc7",
       "branch": "codex/document-illuminatio-project",
       "repository": "https://github.com/mjeremym/illuminatio-parent"
     },
