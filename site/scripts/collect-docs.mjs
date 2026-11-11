@@ -106,14 +106,42 @@ function linkToSource(info, absoluteTarget) {
   return `${info.remote}/blob/${info.commit}/${encodeURI(repositoryRelative)}`;
 }
 
+function githubSourceTarget(target, repositories) {
+  let url;
+  try {
+    url = new URL(target);
+  } catch {
+    return null;
+  }
+  if (url.hostname !== 'github.com') return null;
+  // Preserve source links with fragments unless the collector can prove the generated page owns
+  // the same anchor. Repository headings can be renamed independently of the assembled site.
+  if (url.hash) return null;
+
+  const segments = url.pathname.split('/').filter(Boolean);
+  if (segments.length < 5 || segments[2] !== 'blob') return null;
+  const repository = repositories.find((candidate) => candidate.name === segments[1]);
+  if (!repository) return null;
+
+  // Repository-authored links currently use a one-segment ref such as master or a commit SHA.
+  // Once the owning checkout is known, resolve the remaining path against that checkout so the
+  // assembled site can link internally instead of depending on whether that ref has been merged.
+  const absoluteTarget = path.join(repository.path, ...segments.slice(4).map(decodeURIComponent));
+  return {absoluteTarget, anchor: ''};
+}
+
 function rewriteLinks(content, record, sourceToDestination, repositories) {
   return content.replace(/(!?\[[^\]]*\]\()([^)]+)(\))/g, (whole, prefix, rawTarget, suffix) => {
     const {target, suffix: titleSuffix} = splitLinkTarget(rawTarget);
-    if (!target || target.startsWith('#') || /^[a-z][a-z0-9+.-]*:/i.test(target)) {
+    if (!target || target.startsWith('#')) {
       return whole;
     }
 
-    const [pathPart, anchor = ''] = target.split('#', 2);
+    const githubTarget = githubSourceTarget(target, repositories);
+    if (/^[a-z][a-z0-9+.-]*:/i.test(target) && !githubTarget) return whole;
+
+    const [pathPart, relativeAnchor = ''] = target.split('#', 2);
+    const anchor = githubTarget?.anchor || relativeAnchor;
     if (!pathPart || pathPart.includes('<') || pathPart.includes('>')) {
       return whole;
     }
@@ -125,7 +153,7 @@ function rewriteLinks(content, record, sourceToDestination, repositories) {
       decoded = pathPart;
     }
 
-    let absoluteTarget = path.resolve(path.dirname(record.source), decoded);
+    let absoluteTarget = githubTarget?.absoluteTarget ?? path.resolve(path.dirname(record.source), decoded);
     if (existsSync(absoluteTarget)) {
       try {
         if (statSync(absoluteTarget).isDirectory()) {
