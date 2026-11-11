@@ -1,0 +1,26 @@
+1. Repeatable portfolio scenario
+We begin with a repeatable demonstration data set containing three portfolios across ten business days. This run uses a volume of one hundred, giving management a consistent, controlled scenario from evidence generation through final review.
+
+2. One governed decision workspace
+The Portfolio Decision workspace brings mandate, evidence, decisions and ownership into one lifecycle. This capability was delivered in roughly two weeks because Illuminatio already provides the reusable workflow, security, organisation, audit and evidence foundations.
+
+3. Rules, risk and governed configuration
+Here, management can see the approved allocation ranges, risk evidence, immutable configuration and the exact Drools rules used for this cycle. Policy is visible and versioned, rather than hidden inside application code or individual judgement.
+
+4. Investigate and resolve evidence breaks
+Evidence Review identifies three reconciliation breaks. The missing internal and external evidence is supplied, while the timing difference is accepted as a controlled waiver. Every reason, decision and responsible user remains auditable.
+
+5. Independent Operations certification
+The Portfolio Manager cannot certify their own work. Operations reviews and certifies the exact evidence version, enforcing separation of duties before an investment proposal can proceed.
+
+6. Corrective buy and sell proposal
+The governed proposal generates the corrective actions: buy the Growth investment and sell the corresponding sterling cash position. The target weights, amounts and source evidence are retained with the proposal.
+
+7. Four-eyes approval
+An independent Investment Head approves the exact immutable proposal version. The maker cannot approve their own decision, and the evidence hash preserves what was reviewed.
+
+8. Command and execution oversight
+After approval, the proposal is submitted for execution. Illuminatio distinguishes an approved instruction from completed execution, so acknowledgements, fills, rejects and outstanding feedback remain operationally visible.
+
+9. Feedback and management review
+Feedback and Review closes the loop with portfolio return, benchmark comparison and attribution. The executive takeaway is rapid delivery without sacrificing control: the framework supplied the governed foundations, allowing the team to focus on the portfolio-specific journey.
