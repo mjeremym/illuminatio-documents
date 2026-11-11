@@ -54,6 +54,24 @@ The site is then available at `http://127.0.0.1:8088`; maintained environments m
 before forwarding to the container. `/healthz` contains no documentation and is the only
 unauthenticated endpoint.
 
+### Parent bootstrap integration
+
+The parent Bootstrap catalog exposes the protected container as the opt-in `docs` service. It is
+deliberately not part of the `full` Java-service scope.
+
+```bash
+cd ../illuminatio-parent
+./src/resources/bootstrap.sh -s docs build
+./src/resources/bootstrap.sh -s docs start
+./src/resources/bootstrap.sh -s docs status
+./src/resources/bootstrap.sh -s docs stop
+```
+
+`start` assembles the current sibling repository documentation, validates it, builds the image,
+starts Compose and waits for `/healthz`. Set `MS_DOCUMENTATION_BUILD=false` to reuse an existing
+image, `DOCUMENTATION_PORT` to override port 8088, or `ILLUMINATIO_DOCUMENTS_ROOT` when the documents
+repository is not a sibling of `illuminatio-parent`.
+
 ## Continuous integration
 
 The `Documentation` workflow checks out the exact revisions in `docs-sources.lock.json`, rejects
