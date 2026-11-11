@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "name": "illuminatio-parent",
+      "commit": "f2d314f9ae751e481fe97125c7cc31cce652f713",
+      "branch": "codex/document-illuminatio-project",
+      "repository": "https://github.com/mjeremym/illuminatio-parent"
+    },
+    {
+      "name": "illuminatio-config",
+      "commit": "611491085b1b5e562d15ffdefe24db0a35cc5349",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-config"
+    },
+    {
+      "name": "illuminatio-registry",
+      "commit": "c37ac08e33fc9fd1127c8474dec331dfeeb7ce42",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-registry"
+    },
+    {
+      "name": "illuminatio-admin",
+      "commit": "a992ad61ad037b20f9a28f153096de8b96fc15d0",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-admin"
+    },
+    {
+      "name": "illuminatio-gateway",
+      "commit": "4421b004ac9bde9c335fdf0d6db703be3d0b3d9b",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-gateway"
+    },
+    {
+      "name": "illuminatio-client-api",
+      "commit": "9096043bc693b1e05523842125a026e6dabddf90",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-client-api"
+    },
+    {
+      "name": "illuminatio-security",
+      "commit": "20ee15a48331d23bb40847db472f74237dc39b61",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-security"
+    },
+    {
+      "name": "illuminatio-common",
+      "commit": "6f65d4b30ffe5da7e1ef26d12c142e2a57210714",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-common"
+    },
+    {
+      "name": "illuminatio-calculation-strata",
+      "commit": "c62df41fe6b72866de8590d028bb8a67bac57b2a",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-calculation-strata"
+    },
+    {
+      "name": "illuminatio-organisation",
+      "commit": "f3add7162dfd491160ec6065aa0a4ea16600dcc6",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-organisation"
+    },
+    {
+      "name": "illuminatio-calendar",
+      "commit": "b7978a9158523bb28421595022df1b928824f740",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-calendar"
+    },
+    {
+      "name": "illuminatio-market",
+      "commit": "4d334be5cef186424dbb12a56a3978a19f08dbaa",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-market"
+    },
+    {
+      "name": "illuminatio-trade",
+      "commit": "601cf743aaba33862014f6f330d7a0ecf2c8043e",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-trade"
+    },
+    {
+      "name": "illuminatio-allocation",
+      "commit": "bf7c18b634a3180d7050f99a1081285a92bf4616",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-allocation"
+    },
+    {
+      "name": "illuminatio-portfolio",
+      "commit": "afef37b8d689ba228a148b2f77ceadf8c43b7392",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-portfolio"
+    },
+    {
+      "name": "illuminatio-treasury",
+      "commit": "ea23fb947192ecaf58b2c47839a0cffece7d808c",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-treasury"
+    },
+    {
+      "name": "illuminatio-entitlement",
+      "commit": "7a31052bf768108e2a7597957c91aba9eb2c9c8a",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-entitlement"
+    },
+    {
+      "name": "illuminatio-charge",
+      "commit": "f79fb39cac4991ccf1077ac4533d9b77ed7c16ca",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-charge"
+    },
+    {
+      "name": "illuminatio-risk",
+      "commit": "6a9b857d882aea165f6d622f46978a56d26b282b",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-risk"
+    },
+    {
+      "name": "illuminatio-compute",
+      "commit": "e694e4f1e05bad5508546d9d7448d4a86314e4cb",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-compute"
+    },
+    {
+      "name": "illuminatio-subledger",
+      "commit": "bae395c6eea43fa567220745c3906cbbc1ff53c6",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-subledger"
+    },
+    {
+      "name": "illuminatio-gl",
+      "commit": "850d1a6715c6942d9376dde7ee8867126f6423b1",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-gl"
+    },
+    {
+      "name": "illuminatio-scheduler",
+      "commit": "517fac86928ad2bf3084a51448561bb9afd668ab",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-scheduler"
+    },
+    {
+      "name": "illuminatio-settlement",
+      "commit": "97ce867638eaefad367e05de5da2691ebc256f25",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-settlement"
+    },
+    {
+      "name": "illuminatio-lifecycle",
+      "commit": "9da46f83152bab3cb7195c07e69caaf73756e4e0",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-lifecycle"
+    },
+    {
+      "name": "illuminatio-swift",
+      "commit": "851b35cea0566fdd21091962ad3d90bf617e1786",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-swift"
+    },
+    {
+      "name": "illuminatio-datamart",
+      "commit": "66e519b7e5325a0c9d176cf95e6a14fe0146751e",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-datamart"
+    },
+    {
+      "name": "illuminatio-search",
+      "commit": "8dc2f91c72c16d51fe2e1c39e0cd57a9fc9b3ef9",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-search"
+    },
+    {
+      "name": "illuminatio-spyglass",
+      "commit": "cad1da3d3912d33f3efe58ca00ca4441c14419d2",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-spyglass"
+    },
+    {
+      "name": "illuminatio-ai",
+      "commit": "115006944b27bfced8bd8297bfaadd32aec26b04",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-ai"
+    },
+    {
+      "name": "illuminatio-testdata",
+      "commit": "e210ab309f04aacaf2128300a2a2a01a67762473",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-testdata"
+    },
+    {
+      "name": "illuminatio-integration",
+      "commit": "6b94bdc12b9cf4e58cd4e44bf71fbdd3823d2f54",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-integration"
+    },
+    {
+      "name": "illuminatio-fix",
+      "commit": "d14c403bec556d54f620c6e5395a420f0edd4e84",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-fix"
+    },
+    {
+      "name": "illuminatio-connect",
+      "commit": "44bf173691ab8d1c4e72c3cef163a83d002546c2",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-connect"
+    },
+    {
+      "name": "illuminatio-blockchain",
+      "commit": "1e0a4508a6947445a7cb60e61f4932b9c91b535c",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-blockchain"
+    },
+    {
+      "name": "illuminatio-report",
+      "commit": "8a7b21f500ef750cb81107daba1c93cafbd2a503",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-report"
+    },
+    {
+      "name": "illuminatio-archetype",
+      "commit": "380645d70f1b3524ff3b3dc715f9bad665c6929e",
+      "branch": "codex/documentation",
+      "repository": "https://github.com/mjeremym/illuminatio-archetype"
+    }
+  ]
+}
