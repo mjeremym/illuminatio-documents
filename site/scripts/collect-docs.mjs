@@ -16,6 +16,7 @@ const writeLock = process.argv.includes('--write-lock');
 const excludedNames = new Set([
   '.DS_Store',
   '.git',
+  'legacy-development-notes.md',
   'node_modules',
   'target',
 ]);
@@ -105,7 +106,7 @@ function linkToSource(info, absoluteTarget) {
   return `${info.remote}/blob/${info.commit}/${encodeURI(repositoryRelative)}`;
 }
 
-function rewriteLinks(content, record, sourceToDestination) {
+function rewriteLinks(content, record, sourceToDestination, repositories) {
   return content.replace(/(!?\[[^\]]*\]\()([^)]+)(\))/g, (whole, prefix, rawTarget, suffix) => {
     const {target, suffix: titleSuffix} = splitLinkTarget(rawTarget);
     if (!target || target.startsWith('#') || /^[a-z][a-z0-9+.-]*:/i.test(target)) {
@@ -144,8 +145,10 @@ function rewriteLinks(content, record, sourceToDestination) {
       if (!rewritten.startsWith('.')) {
         rewritten = `./${rewritten}`;
       }
-    } else if (existsSync(absoluteTarget) && isWithin(absoluteTarget, record.repository.path)) {
-      rewritten = linkToSource(record.repository, absoluteTarget);
+    } else if (existsSync(absoluteTarget)) {
+      const owningRepository = repositories.find((repository) => isWithin(absoluteTarget, repository.path));
+      if (!owningRepository) return whole;
+      rewritten = linkToSource(owningRepository, absoluteTarget);
     } else {
       return whole;
     }
@@ -171,13 +174,21 @@ async function collectTree(repository, sourceRoot, destinationRoot, records, sou
   }
 }
 
-async function writeCollectedFiles(records, sourceToDestination) {
+async function writeCollectedFiles(records, sourceToDestination, repositories) {
   for (const record of records) {
     await mkdir(path.dirname(record.destination), {recursive: true});
     if (/\.mdx?$/i.test(record.source)) {
       let content = await readFile(record.source, 'utf8');
       content = content.replace(/<(https?:\/\/[^ >]+)>/g, '[$1]($1)');
-      content = rewriteLinks(content, record, sourceToDestination);
+      // protoc-gen-doc emits HTML `name` anchors that MDX renders but Docusaurus does not index.
+      // Convert them to explicit heading/span IDs while staging; the generated source stays untouched.
+      content = content
+        .replace(/^(# Protocol Documentation)\n<a name="top"><\/a>/m, '$1 {#top}')
+        .replace(/<a name="([^"]+)"><\/a>\s*(?:<p[^>]*>[\s\S]*?<\/p>\s*)?(#{1,6}\s+[^\n]+)/g, '$2 {#$1}')
+        .replace(/<a name="([^"]+)"\s*\/>/g, '<span id="$1"></span>')
+        .replace(/\[([^\]]+)\]\(#(?:double|float|u?int32|u?int64|sint32|sint64|fixed32|fixed64|sfixed32|sfixed64|bool|string|bytes)\)/g, '`$1`')
+        .replace(/\[([^\]]+)\]\(#google-protobuf-[^)]+\)/g, '`$1`');
+      content = rewriteLinks(content, record, sourceToDestination, repositories);
       const sourceRelative = path.relative(record.repository.path, record.source).split(path.sep).join('/');
       const editUrl = `${record.repository.remote}/edit/${record.repository.branch}/${encodeURI(sourceRelative)}`;
       if (!content.startsWith('---\n')) {
@@ -298,7 +309,7 @@ async function main() {
     }
   }
 
-  await writeCollectedFiles(records, sourceToDestination);
+  await writeCollectedFiles(records, sourceToDestination, repositories);
 
   const sourceManifest = {
     schemaVersion: 1,

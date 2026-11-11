@@ -12,6 +12,7 @@ const config = {
   organizationName: 'mjeremym',
   projectName: 'illuminatio-documents',
   trailingSlash: false,
+  onBrokenAnchors: 'throw',
   onBrokenLinks: 'throw',
   markdown: {
     mermaid: true,
