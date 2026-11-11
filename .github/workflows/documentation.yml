@@ -1,0 +1,55 @@
+name: Documentation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out documentation repository
+        uses: actions/checkout@v4
+        with:
+          path: illuminatio-documents
+
+      - name: Check out locked source revisions
+        working-directory: illuminatio-documents
+        env:
+          ILLUMINATIO_DOCS_TOKEN: ${{ secrets.ILLUMINATIO_DOCS_TOKEN }}
+        run: node site/scripts/checkout-sources.mjs
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: illuminatio-documents/site/package-lock.json
+
+      - name: Install site dependencies
+        working-directory: illuminatio-documents/site
+        run: npm ci --ignore-scripts
+
+      - name: Reject high-severity dependency findings
+        working-directory: illuminatio-documents/site
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Assemble and build documentation
+        working-directory: illuminatio-documents/site
+        run: npm run build
+
+      - name: Build protected container
+        working-directory: illuminatio-documents
+        run: docker build -t illuminatio-documents:${{ github.sha }} .
+
+      - name: Upload static site
+        uses: actions/upload-artifact@v4
+        with:
+          name: illuminatio-documentation-${{ github.sha }}
+          path: illuminatio-documents/site/build
+          if-no-files-found: error

@@ -53,3 +53,13 @@ docker compose -f deployment/docker-compose.yml up -d
 The site is then available at `http://127.0.0.1:8088`; maintained environments must terminate TLS
 before forwarding to the container. `/healthz` contains no documentation and is the only
 unauthenticated endpoint.
+
+## Continuous integration
+
+The `Documentation` workflow checks out the exact revisions in `docs-sources.lock.json`, rejects
+dirty or incomplete source sets, validates links and anchors, builds the static site, audits
+production dependencies at high severity, and builds the protected container.
+
+Configure the repository secret `ILLUMINATIO_DOCS_TOKEN` with read access to the private
+`illuminatio-*` source repositories. The token is used only as an HTTP authorization header while
+cloning locked commits and is never written into a remote URL or generated artifact.
