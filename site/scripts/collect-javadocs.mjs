@@ -100,13 +100,26 @@ async function main() {
   await rm(publishedRoot, {recursive: true, force: true});
   await mkdir(publishedRoot, {recursive: true});
 
-  const published = inspected.filter((module) => module.state === 'published');
-  for (const module of published) {
+  const candidates = inspected.filter((module) => module.state === 'published');
+  const published = [];
+  for (const module of candidates) {
     const destination = path.join(publishedRoot, module.name);
-    await cp(module.outputRoot, destination, {recursive: true});
+    try {
+      await cp(module.outputRoot, destination, {recursive: true});
+    } catch (error) {
+      if (!allowMissing || error?.code !== 'ENOENT') throw error;
+      await rm(destination, {recursive: true, force: true});
+      unavailable.push({
+        ...module,
+        state: 'missing',
+        reason: 'Javadoc disappeared while the local snapshot was being staged',
+      });
+      continue;
+    }
     if (!existsSync(path.join(destination, 'index.html'))) {
       throw new Error(`Staged Javadoc is missing its index: ${module.name}`);
     }
+    published.push(module);
   }
 
   const manifest = {

@@ -49,6 +49,16 @@ const sidebars = {
         'platform/architecture/module-development-guide',
         {
           type: 'doc',
+          id: 'platform/architecture/testing-strategy',
+          label: 'Testing strategy',
+        },
+        {
+          type: 'doc',
+          id: 'platform/architecture/bdd-testing-strategy',
+          label: 'Behaviour-driven testing',
+        },
+        {
+          type: 'doc',
           id: 'platform/architecture/ai-assisted-development',
           label: 'AI-assisted development',
         },
@@ -61,6 +71,11 @@ const sidebars = {
       label: 'API and integration',
       items: [
         'platform/api/index',
+        {
+          type: 'doc',
+          id: 'platform/api/unified-api-handbook',
+          label: 'Unified API reference',
+        },
         'platform/api/using-apis-with-insomnia',
         {
           type: 'category',

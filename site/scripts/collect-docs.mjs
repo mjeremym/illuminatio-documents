@@ -83,6 +83,61 @@ function destinationRelative(sourceRelative) {
   return normalized.replace(/\/README\.md$/i, '/index.md');
 }
 
+const menuTerms = new Map([
+  ['acl', 'ACL'],
+  ['ai', 'AI'],
+  ['api', 'API'],
+  ['apis', 'APIs'],
+  ['bdd', 'BDD'],
+  ['datatables', 'DataTables'],
+  ['docker', 'Docker'],
+  ['fix', 'FIX'],
+  ['graphql', 'GraphQL'],
+  ['grpc', 'gRPC'],
+  ['id', 'ID'],
+  ['insomnia', 'Insomnia'],
+  ['jar', 'JAR'],
+  ['javadoc', 'Javadoc'],
+  ['jwt', 'JWT'],
+  ['liquibase', 'Liquibase'],
+  ['maven', 'Maven'],
+  ['oauth', 'OAuth'],
+  ['openapi', 'OpenAPI'],
+  ['querybuilder', 'QueryBuilder'],
+  ['rabbitmq', 'RabbitMQ'],
+  ['rest', 'REST'],
+  ['spring', 'Spring'],
+  ['ui', 'UI'],
+]);
+
+function readableMenuLabel(source) {
+  let name = path.basename(source, path.extname(source));
+  if (/^(?:README|index)$/i.test(name)) {
+    name = path.basename(path.dirname(source));
+    if (name.toLowerCase() === 'docs') return 'Overview';
+  }
+  const words = name.split(/[_-]+/).filter(Boolean);
+  return words
+    .map((word, index) => {
+      const lower = word.toLowerCase();
+      const term = menuTerms.get(lower);
+      if (term) return term;
+      return index === 0 ? lower.charAt(0).toUpperCase() + lower.slice(1) : lower;
+    })
+    .join(' ');
+}
+
+function addFrontMatterValue(content, key, value) {
+  if (new RegExp(`^${key}:`, 'm').test(content.match(/^---\n[\s\S]*?\n---\n/)?.[0] ?? '')) {
+    return content;
+  }
+  const entry = `${key}: ${JSON.stringify(value)}\n`;
+  if (content.startsWith('---\n')) {
+    return content.replace(/^---\n/, `---\n${entry}`);
+  }
+  return `---\n${entry}---\n\n${content}`;
+}
+
 async function listSourceFiles(root, current = root) {
   if (!existsSync(current)) {
     return [];
@@ -152,9 +207,6 @@ function githubSourceTarget(target, repositories) {
     return null;
   }
   if (url.hostname !== 'github.com') return null;
-  // Preserve source links with fragments unless the collector can prove the generated page owns
-  // the same anchor. Repository headings can be renamed independently of the assembled site.
-  if (url.hash) return null;
 
   const segments = url.pathname.split('/').filter(Boolean);
   if (segments.length < 5 || segments[2] !== 'blob') return null;
@@ -165,7 +217,7 @@ function githubSourceTarget(target, repositories) {
   // Once the owning checkout is known, resolve the remaining path against that checkout so the
   // assembled site can link internally instead of depending on whether that ref has been merged.
   const absoluteTarget = path.join(repository.path, ...segments.slice(4).map(decodeURIComponent));
-  return {absoluteTarget, anchor: ''};
+  return {absoluteTarget, anchor: url.hash.slice(1)};
 }
 
 function rewriteLinks(content, record, sourceToDestination, repositories) {
@@ -243,6 +295,22 @@ async function collectTree(repository, sourceRoot, destinationRoot, records, sou
 }
 
 async function writeCollectedFiles(records, sourceToDestination, repositories) {
+  const categoryDirectories = new Set();
+  for (const record of records) {
+    for (let directory = path.dirname(record.destination);
+      directory !== record.destinationRoot && isWithin(directory, record.destinationRoot);
+      directory = path.dirname(directory)) {
+      categoryDirectories.add(directory);
+    }
+  }
+  for (const directory of categoryDirectories) {
+    const categoryFile = path.join(directory, '_category_.json');
+    if (!existsSync(categoryFile)) {
+      await mkdir(directory, {recursive: true});
+      await writeFile(categoryFile, category(readableMenuLabel(directory), 1));
+    }
+  }
+
   for (const record of records) {
     await mkdir(path.dirname(record.destination), {recursive: true});
     if (/\.mdx?$/i.test(record.source)) {
@@ -259,9 +327,8 @@ async function writeCollectedFiles(records, sourceToDestination, repositories) {
       content = rewriteLinks(content, record, sourceToDestination, repositories);
       const sourceRelative = path.relative(record.repository.path, record.source).split(path.sep).join('/');
       const editUrl = `${record.repository.remote}/edit/${record.repository.branch}/${encodeURI(sourceRelative)}`;
-      if (!content.startsWith('---\n')) {
-        content = `---\ncustom_edit_url: ${editUrl}\n---\n\n${content}`;
-      }
+      content = addFrontMatterValue(content, 'custom_edit_url', editUrl);
+      content = addFrontMatterValue(content, 'sidebar_label', readableMenuLabel(record.source));
       await writeFile(record.destination, content);
     } else {
       await cp(record.source, record.destination);

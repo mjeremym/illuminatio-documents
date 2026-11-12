@@ -60,10 +60,25 @@ async function main() {
 
   const files = await filesUnder(docsRoot);
   const markdownFiles = files.filter((file) => /\.mdx?$/i.test(file));
+  const categoryFiles = files.filter((file) => path.basename(file) === '_category_.json');
   const broken = [];
+  const unreadableLabels = [];
+
+  for (const file of categoryFiles) {
+    const {label} = JSON.parse(await readFile(file, 'utf8'));
+    if (!label || /_/.test(label)
+        || (/^[a-z0-9]+(?:-[a-z0-9]+)+$/.test(label) && !label.startsWith('illuminatio-'))) {
+      unreadableLabels.push(`${path.relative(docsRoot, file)} -> ${label || 'missing label'}`);
+    }
+  }
 
   for (const file of markdownFiles) {
     const content = await readFile(file, 'utf8');
+    const label = content.match(/^sidebar_label:\s*["']?([^\n"']+)/m)?.[1]?.trim()
+      ?? content.match(/^title:\s*["']?([^\n"']+)/m)?.[1]?.trim();
+    if (!label || /_/.test(label) || /^[a-z0-9]+(?:-[a-z0-9]+)+$/.test(label)) {
+      unreadableLabels.push(`${path.relative(docsRoot, file)} -> ${label || 'missing label'}`);
+    }
     for (const match of content.matchAll(/!?\[[^\]]*\]\(([^)]+)\)/g)) {
       const rawTarget = match[1].trim();
       const target = rawTarget.startsWith('<')
@@ -87,6 +102,9 @@ async function main() {
 
   if (broken.length > 0) {
     throw new Error(`Broken local documentation links:\n${broken.join('\n')}`);
+  }
+  if (unreadableLabels.length > 0) {
+    throw new Error(`Unreadable generated navigation labels:\n${unreadableLabels.join('\n')}`);
   }
 
   const javadocManifest = JSON.parse(await readFile(javadocManifestPath, 'utf8'));
