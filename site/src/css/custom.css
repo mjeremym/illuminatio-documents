@@ -25,6 +25,9 @@
   --illuminatio-pink: #d83b8c;
   --illuminatio-gold: #f2b705;
   --illuminatio-green: #16865d;
+  --illuminatio-code-background: #0b1020;
+  --illuminatio-code-border: #283650;
+  --illuminatio-code-text: #f1f5f9;
 }
 
 [data-theme='dark'] {
@@ -165,9 +168,18 @@ body {
 
 .theme-code-block,
 pre {
-  border: 1px solid color-mix(in srgb, var(--illuminatio-line) 82%, transparent);
+  border: 1px solid var(--illuminatio-code-border);
   border-radius: 0.7rem;
-  box-shadow: 0 10px 26px rgba(18, 38, 68, 0.08);
+  background: var(--illuminatio-code-background) !important;
+  color: var(--illuminatio-code-text);
+  box-shadow: 0 12px 30px rgba(8, 15, 30, 0.18);
+}
+
+.theme-code-block pre,
+.theme-code-block .prism-code,
+pre code {
+  background: transparent !important;
+  color: inherit;
 }
 
 code {
@@ -250,6 +262,12 @@ code {
 
   .theme-doc-markdown h1 {
     font-size: 2.25rem;
+  }
+
+  .theme-doc-markdown table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
   }
 }
 

@@ -22,7 +22,7 @@ const config = {
     },
   },
   themes: ['@docusaurus/theme-mermaid'],
-  staticDirectories: ['../images'],
+  staticDirectories: ['static', '../images'],
   presets: [
     [
       'classic',
@@ -69,10 +69,12 @@ const config = {
         src: 'illuminatio-mark.png',
       },
       items: [
-        {to: '/docs/platform/overview/system-overview', label: 'Overview', position: 'left'},
+        {to: '/docs/platform/overview/system-overview', label: 'Start here', position: 'left'},
+        {to: '/docs/platform/architecture/design-fundamentals', label: 'Architecture', position: 'left'},
         {to: '/docs/modules', label: 'Modules', position: 'left'},
+        {to: '/docs/platform/architecture/service-composition-and-development', label: 'Build & deploy', position: 'left'},
         {to: '/docs/platform/api', label: 'APIs', position: 'left'},
-        {href: '/javadoc/', label: 'Javadoc', position: 'left'},
+        {to: '/javadoc', label: 'Javadoc', position: 'left'},
         {
           href: 'https://github.com/mjeremym/illuminatio-parent',
           label: 'GitHub',
@@ -87,8 +89,11 @@ const config = {
           title: 'Documentation',
           items: [
             {label: 'System overview', to: '/docs/platform/overview/system-overview'},
-            {label: 'Architecture', to: '/docs/platform/architecture'},
-            {label: 'Operations', to: '/docs/platform/operations/deployment-environments'},
+            {label: 'Design fundamentals', to: '/docs/platform/architecture/design-fundamentals'},
+            {label: 'Processing, rules and workflows', to: '/docs/platform/architecture/processing-rules-workflows'},
+            {label: 'Build applications', to: '/docs/platform/architecture/service-composition-and-development'},
+            {label: 'Module catalogue', to: '/docs/modules'},
+            {label: 'Deployment topologies', to: '/docs/platform/operations/deployment-topologies'},
           ],
         },
         {
@@ -105,7 +110,8 @@ const config = {
       theme: {light: 'neutral', dark: 'dark'},
     },
     prism: {
-      theme: prismThemes.github,
+      // Keep examples visually distinct from the light documentation canvas in both modes.
+      theme: prismThemes.dracula,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['java', 'bash', 'json', 'yaml', 'graphql'],
     },

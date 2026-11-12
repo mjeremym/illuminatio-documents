@@ -9,6 +9,8 @@ site/build/
 site/.docusaurus/
 site/.cache/
 site/.generated/
+site/src/generated/
+site/static/javadoc/
 site/build/
 coverage/
 

@@ -15,10 +15,33 @@ Technical documentation remains owned by the repository it describes:
 The existing `articles/`, `images/` and `presentations/` directories are original editorial source.
 Only entries explicitly approved in `content-manifest.yml` may be published.
 
+## Supporting-source policy
+
+Presentation files, demonstration scripts and
+[Jeremy Miller's published articles](https://medium.com/@mjeremym) are research inputs for clearer
+explanations and examples; they are not automatically published into the engineering handbook or
+treated as the current technical contract. Before an idea is published, verify it against the
+owning repository's code, configuration, schemas, tests and deployment assets.
+
+This matters because editorial material can legitimately contain historical names, dated estate
+measurements, target deployment platforms or future capabilities. The combined site publishes the
+verified result from the parent or module documentation, while the original source remains here for
+future review.
+
 ## Local development
 
 Prerequisites: Node.js 24 or later, npm and sibling Illuminatio repositories checked out under the
 same `Developments` directory.
+
+The combined site stages generated Javadoc from each Java module's
+`target/reports/apidocs/` directory. A local build publishes every fresh module output it finds and
+labels missing or stale output on the Javadoc index. A release build is strict: generate reactor
+Javadoc first and fail rather than publish a partial or stale reference.
+
+```bash
+cd ../illuminatio-parent
+mvn -DskipTests org.apache.maven.plugins:maven-javadoc-plugin:3.11.2:javadoc
+```
 
 ```bash
 cd site

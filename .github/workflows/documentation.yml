@@ -24,6 +24,19 @@ jobs:
           ILLUMINATIO_DOCS_TOKEN: ${{ secrets.ILLUMINATIO_DOCS_TOKEN }}
         run: node site/scripts/checkout-sources.mjs
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Generate reactor Javadoc
+        run: >-
+          mvn -f illuminatio-parent/pom.xml
+          -DskipTests
+          org.apache.maven.plugins:maven-javadoc-plugin:3.11.2:javadoc
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:

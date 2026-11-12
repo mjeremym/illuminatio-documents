@@ -21,6 +21,19 @@ const excludedNames = new Set([
   'target',
 ]);
 
+const excludedPublishedPaths = new Set([
+  'illuminatio-parent:api/documentation-coverage.md',
+  'illuminatio-market:rate-sourcing-and-generation-architecture.md',
+  'illuminatio-market:rate-generation-defaulting-table.md',
+  'illuminatio-subledger:TRANSACTION_SERVICES.md',
+  'illuminatio-testdata:full-platform-demo/coverage-matrix.md',
+  'illuminatio-testdata:full-platform-demo/persona-journeys.md',
+  'illuminatio-testdata:full-platform-demo/reference-inventory.md',
+  'illuminatio-testdata:full-platform-demo/report-matrix.md',
+  'illuminatio-testdata:full-platform-demo/ruleset-matrix.md',
+  'illuminatio-testdata:full-platform-demo/workflow-matrix.md',
+]);
+
 function runGit(repository, args, fallback = '') {
   try {
     return execFileSync('git', ['-C', repository, ...args], {encoding: 'utf8'}).trim();
@@ -87,6 +100,31 @@ async function listSourceFiles(root, current = root) {
     }
   }
   return files;
+}
+
+function isPublishedDocumentation(repository, sourceRoot, source) {
+  const relative = path.relative(sourceRoot, source).split(path.sep).join('/');
+
+  if (excludedPublishedPaths.has(`${repository.name}:${relative}`)) {
+    return false;
+  }
+
+  if (repository.name === 'illuminatio-parent'
+      && (relative.startsWith('plans/') || relative.startsWith('decisions/'))) {
+    return false;
+  }
+
+  if (repository.name !== 'illuminatio-parent') {
+    const base = path.basename(source);
+    if (/(?:-|_)plan\.md$/i.test(base)
+        || /(?:^|\/)(?:adr|decisions?|migrations?)(?:\/|$)/i.test(relative)
+        || /^adr[-_]\d+.*\.md$/i.test(base)
+        || /(?:^|[-_])migration(?:[-_]|\.)/i.test(base)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function splitLinkTarget(rawTarget) {
@@ -191,7 +229,9 @@ function rewriteLinks(content, record, sourceToDestination, repositories) {
 async function collectTree(repository, sourceRoot, destinationRoot, records, sourceToDestination) {
   const files = (await listSourceFiles(sourceRoot)).filter((source) => {
     const repositoryRelative = path.relative(repository.path, source).split(path.sep).join('/');
-    return !(repository.name === 'illuminatio-parent' && repositoryRelative === 'docs/operations/developer-notes.md');
+    return isPublishedDocumentation(repository, sourceRoot, source)
+      && !(repository.name === 'illuminatio-parent'
+        && repositoryRelative === 'docs/operations/developer-notes.md');
   });
   for (const source of files) {
     const relative = path.relative(sourceRoot, source);
@@ -262,17 +302,35 @@ async function writeGeneratedNavigation(modules, sourceManifest) {
 
   await writeFile(
     path.join(generatedDocsRoot, 'index.md'),
-    `---\nslug: /\ntitle: Documentation\n---\n\n# Illuminatio documentation\n\n` +
-      `This site is assembled from the repositories that own the platform and module documentation.\n\n` +
-      `- [Platform overview](/docs/platform/overview/system-overview)\n` +
-      `- [Module catalogue](/docs/modules)\n` +
+    `---\nslug: /\ntitle: Engineering handbook\n---\n\n# Illuminatio engineering handbook\n\n` +
+      `Understand how the platform is designed, how work moves through it, and how each module contributes to a complete business process. The handbook is assembled from documentation owned by the parent and module repositories.\n\n` +
+      `## Start with the platform\n\n` +
+      `- [System overview](/docs/platform/overview/system-overview) — the runtime topology, capability boundaries and principal actors.\n` +
+      `- [Module capability map](/docs/platform/overview/module-capability-map) — what each module owns and when to use it.\n` +
+      `- [Design fundamentals](/docs/platform/architecture/design-fundamentals) — the shared architecture pattern and why every module follows it.\n` +
+      `- [Module dependencies and shared capabilities](/docs/platform/architecture/module-dependencies-and-shared-capabilities) — the build tree, runtime collaboration graph and cross-cutting capability plane.\n\n` +
+      `## Follow the processing\n\n` +
+      `- [Processing, rules and workflows](/docs/platform/architecture/processing-rules-workflows)\n` +
+      `- [Trade to settlement](/docs/platform/overview/business-flows/trade-to-settlement)\n` +
+      `- [Treasury, charges and payments](/docs/platform/overview/business-flows/treasury-charges-payments)\n` +
+      `- [External gateway flows](/docs/platform/overview/business-flows/external-gateways)\n` +
+      `- [Portfolio evidence to governed submission](/docs/platform/overview/business-flows/portfolio-decision-to-submission)\n\n` +
+      `## Build and operate\n\n` +
+      `- [Develop and compose an application](/docs/platform/architecture/service-composition-and-development) — choose an independent service or modular standalone application and wire the required Common capabilities.\n` +
+      `- [Use AI productively](/docs/platform/architecture/ai-assisted-development) — give agents useful context, work in evidence-backed increments, and review generated changes safely.\n` +
+      `- [Adopt Common in a service](/docs/modules/illuminatio-common/building-a-service-with-common) — annotations, properties, schemas, application contracts and tests.\n` +
+      `- [Build a modular standalone application](/docs/modules/illuminatio-common/building-a-standalone-service) — complete Maven, Spring Boot, Liquibase, Docker and Compose example.\n` +
+      `- [Deployment topologies and runbooks](/docs/platform/operations/deployment-topologies) — Local DEV, complete multi-service, Local Linux, Hetzner and provider-neutral deployments.\n` +
+      `- [Module documentation](/docs/modules)\n` +
       `- [API reference catalogue](/docs/platform/api)\n` +
-      `- [Build information](/docs/build-info)\n`,
+      `- [Discover APIs and use Insomnia](/docs/platform/api/using-apis-with-insomnia)\n` +
+      `- [Official framework and tool references](/docs/platform/reference/external-technology-documentation) — version-aware upstream documentation for the technologies used by Illuminatio.\n` +
+      `- [Deployment environments](/docs/platform/operations/deployment-environments)\n`,
   );
   await writeFile(
     path.join(generatedDocsRoot, 'modules', 'index.md'),
     `---\ntitle: Modules\n---\n\n# Illuminatio modules\n\n` +
-      `Each module owns its technical page and generated API references.\n\n` +
+      `Each module owns a bounded capability. Its documentation explains what the capability does, when to use it, the processing and integration flows it participates in, its deployment behavior, and links to source-owned API references and live discovery where configured.\n\n` +
       `| Module | Documentation state |\n|---|---|\n${moduleRows}\n`,
   );
 

@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "collect": "node scripts/collect-docs.mjs",
-    "collect:local": "node scripts/collect-docs.mjs --allow-dirty",
+    "collect": "node scripts/collect-docs.mjs && node scripts/collect-javadocs.mjs",
+    "collect:local": "node scripts/collect-docs.mjs --allow-dirty && node scripts/collect-javadocs.mjs --allow-missing",
+    "collect:javadoc": "node scripts/collect-javadocs.mjs",
     "validate": "node scripts/validate-docs.mjs",
     "start": "npm run collect:local && npm run validate && docusaurus start",
     "build": "npm run collect && npm run validate && docusaurus build",

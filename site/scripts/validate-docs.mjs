@@ -7,6 +7,7 @@ const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(scriptDirectory, '..');
 const generatedRoot = path.join(siteRoot, '.generated');
 const docsRoot = path.join(generatedRoot, 'docs');
+const javadocRoot = path.join(siteRoot, 'static', 'javadoc');
 
 async function filesUnder(root, current = root) {
   const result = [];
@@ -52,6 +53,10 @@ async function main() {
   if (!existsSync(path.join(generatedRoot, 'source-manifest.json'))) {
     throw new Error('Missing generated source manifest.');
   }
+  const javadocManifestPath = path.join(generatedRoot, 'javadoc-manifest.json');
+  if (!existsSync(javadocManifestPath)) {
+    throw new Error('Missing generated Javadoc manifest. Run the Javadoc collector.');
+  }
 
   const files = await filesUnder(docsRoot);
   const markdownFiles = files.filter((file) => /\.mdx?$/i.test(file));
@@ -84,7 +89,27 @@ async function main() {
     throw new Error(`Broken local documentation links:\n${broken.join('\n')}`);
   }
 
-  console.log(`Validated ${markdownFiles.length} Markdown files and ${moduleCount} reactor modules.`);
+  const javadocManifest = JSON.parse(await readFile(javadocManifestPath, 'utf8'));
+  if (!javadocManifest.allowMissing
+      && javadocManifest.publishedCount !== javadocManifest.expectedCount) {
+    throw new Error(
+      `Release Javadoc is incomplete: ${javadocManifest.publishedCount}/${javadocManifest.expectedCount}.`,
+    );
+  }
+  for (const module of javadocManifest.modules) {
+    if (!/^illuminatio-[a-z0-9-]+$/.test(module.name)
+        || module.route !== `/javadoc/${module.name}/`) {
+      throw new Error(`Unsafe or inconsistent Javadoc manifest entry: ${JSON.stringify(module)}`);
+    }
+    if (!existsSync(path.join(javadocRoot, module.name, 'index.html'))) {
+      throw new Error(`Missing staged Javadoc index for ${module.name}.`);
+    }
+  }
+
+  console.log(
+    `Validated ${markdownFiles.length} Markdown files, ${moduleCount} reactor modules and `
+      + `${javadocManifest.publishedCount} Javadoc sites.`,
+  );
 }
 
 await main();
