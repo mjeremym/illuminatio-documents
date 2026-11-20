@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "collect": "node scripts/collect-docs.mjs && node scripts/collect-javadocs.mjs",
-    "collect:local": "node scripts/collect-docs.mjs --allow-dirty && node scripts/collect-javadocs.mjs --allow-missing",
+    "collect": "node scripts/collect-docs.mjs && node scripts/collect-javadocs.mjs && npm run audit:api-docs",
+    "collect:local": "node scripts/collect-docs.mjs --allow-dirty && node scripts/collect-javadocs.mjs --allow-missing && npm run audit:api-docs",
     "collect:javadoc": "node scripts/collect-javadocs.mjs",
+    "audit:api-docs": "node ../../illuminatio-parent/scripts/documentation/audit-api-documentation.mjs --check",
     "validate": "node scripts/validate-docs.mjs",
     "start": "npm run collect:local && npm run validate && docusaurus start",
     "build": "npm run collect && npm run validate && docusaurus build",
